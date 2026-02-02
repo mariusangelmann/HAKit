@@ -21,13 +21,14 @@ public struct HAConnectionInfo: Equatable {
     /// - Parameter url: The url to connect to
     /// - Parameter userAgent: Optionally change the User-Agent to this
     /// - Parameter evaluateCertificate: Optionally override default SecTrust validation
+    /// - Parameter engine: Optionally provide a custom WebSocket engine (e.g. for mTLS)
     /// - Throws: If the URL provided is invalid in some way, see `CreationError`
-    public init(url: URL, userAgent: String? = nil, evaluateCertificate: EvaluateCertificate? = nil) throws {
-        try self.init(url: url, userAgent: userAgent, evaluateCertificate: evaluateCertificate, engine: nil)
-    }
-
-    /// Internally create a connection info with engine
-    internal init(url: URL, userAgent: String?, evaluateCertificate: EvaluateCertificate?, engine: Engine?) throws {
+    public init(
+        url: URL,
+        userAgent: String? = nil,
+        evaluateCertificate: EvaluateCertificate? = nil,
+        engine: Engine? = nil
+    ) throws {
         guard let host = url.host, !host.isEmpty else {
             throw CreationError.emptyHostname
         }
